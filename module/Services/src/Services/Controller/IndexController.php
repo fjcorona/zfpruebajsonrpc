@@ -11,17 +11,18 @@ namespace Services\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Json\Server\Server as Server;
-use Services\Api\Service as Service;
 use Zend\Json\Server\Smd as Smd;
 use Zend\Json\Server\Client as ClientJson;
 use Zend\Http\Response as Response;
 use Zend\Http\Client as ClientHttp;
+use Services\Api\Service as Service;
+
 class IndexController extends AbstractActionController{
     
     /**
-     * 
      * @return \Zend\View\Model\ViewModel
      */
+    
     public function indexAction(){
         return $this->response;
     }
@@ -29,14 +30,18 @@ class IndexController extends AbstractActionController{
     public function rpcAction(){
         $response = new Response();
         $response->setStatusCode(Response::STATUS_CODE_200);
-        $response->getHeaders()->addHeaders(array(
-            'Content-Type' => 'application/json',)
+        $response->getHeaders()->addHeaders(
+                array(
+                    'Content-Type' => 'application/json',
+                )
         );
+        
         $server = new Server();
-        $server->setClass(new \Services\Api\Service());
-        $server->setObject(new Service());
+        $server->setClass(new \Services\Api\Service($this->getServiceLocator()));
+        $server->setObject(new Service($this->getServiceLocator()));
         $server->registerFaultException('Services\Api\Exception');
         $server->getRequest()->setVersion(Server::VERSION_2);
+        
         if($this->getRequest()->isGet()){
             $smd = $server->getServiceMap()->setEnvelope(Smd::ENV_JSONRPC_2);
             $response->setContent($smd);
@@ -47,12 +52,16 @@ class IndexController extends AbstractActionController{
     }
     
     public function clientjsonAction(){
-        $url = 'http://dev.localhost/jsonrpc/public/jsonserver/rpc';
+        $url = 'http://localjcorona/jsonrpc/public/jsonserver/rpc';
+        
         $client = new ClientHttp();
         $client->setUri($url);
+        
         $jsonrpcclient = new ClientJson($url,$client);        
-        $result = $jsonrpcclient->call('getHola',array());
+        $result = $jsonrpcclient->call('getByLimit',array());
+        
         var_dump($result);
+        
         return $this->response;
     }
        
