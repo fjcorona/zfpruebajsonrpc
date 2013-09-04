@@ -15,14 +15,14 @@
 
     <?php
         $i = 0;   
-        foreach ($this->data as $empleado){ 
+        foreach ($this->data as $empleado): 
     ?>
         <tr align = "center">
             <td><?php echo ++$i ?></td>
-            <?php foreach ($empleado as $dato){ ?>
+            <?php foreach ($empleado as $dato): ?>
                 <td> <?php echo $dato?> </td>
-            <?php }?>
+            <?php endforeach;?>
         </tr>
-    <?php }?>
+    <?php endforeach;?>
     
 </table>
