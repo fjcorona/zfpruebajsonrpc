@@ -1,0 +1,28 @@
+<table align="center" border="1">
+    
+    <caption><b>Fuerzaventamen</b></caption>
+   
+    <tr>
+        <th>&nbsp; l&iacute;mite &nbsp;</th>
+        <th>&nbsp; n&oacute;mina &nbsp;</th>
+        <th>&nbsp; divisi&oacute;n &nbsp;</th>
+        <th>&nbsp; ap_paterno &nbsp;</th>
+        <th>&nbsp; ap_materno &nbsp;</th>
+        <th>&nbsp; nombres &nbsp;</th>
+        <th>&nbsp; puesto &nbsp;</th>
+        <th>&nbsp; fecha_nacim &nbsp;</th>
+    </tr>
+
+    <?php
+        $i = 0;   
+        foreach ($this->data as $empleado){ 
+    ?>
+        <tr align = "center">
+            <td><?php echo ++$i ?></td>
+            <?php foreach ($empleado as $dato){ ?>
+                <td> <?php echo $dato?> </td>
+            <?php }?>
+        </tr>
+    <?php }?>
+    
+</table>

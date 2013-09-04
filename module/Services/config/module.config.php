@@ -23,7 +23,8 @@ return array(
                     ),
                 ),
                 'may_terminate' => true,
-                'child_routes' => array( 
+                'child_routes' => array(
+                    
                     'rpc' => array(
                         'type' => 'Literal',
                         'options' => array(
@@ -34,16 +35,24 @@ return array(
                             ),
                         ),
                     ), 
+                    
                     'cliente' => array(
-                        'type' => 'Literal',
+                       'type' => 'Segment',
                         'options' => array(
-                            'route' => '/cliente',
+                            
+                            'route'       =>    '/cliente[/:limit]',
+                                    
+                            'constraints' =>    array(
+                                'limit'  => '[0-9]*'
+                            ),
+                               
                             'defaults' => array(
                                 'controller' => 'indexcontroller',
                                 'action'     => 'clientjson',
                             ),
                         ),
-                    ),                      
+                    ),                 
+                    
                 ),
             ),
         ),

@@ -15,6 +15,7 @@ use Zend\Json\Server\Smd as Smd;
 use Zend\Json\Server\Client as ClientJson;
 use Zend\Http\Response as Response;
 use Zend\Http\Client as ClientHttp;
+use Zend\View\Model\ViewModel;
 use Services\Api\Service as Service;
 
 class IndexController extends AbstractActionController{
@@ -37,7 +38,7 @@ class IndexController extends AbstractActionController{
         );
         
         $server = new Server();
-        $server->setClass(new \Services\Api\Service($this->getServiceLocator()));
+        $server->setClass('\Services\Api\Service');
         $server->setObject(new Service($this->getServiceLocator()));
         $server->registerFaultException('Services\Api\Exception');
         $server->getRequest()->setVersion(Server::VERSION_2);
@@ -48,21 +49,25 @@ class IndexController extends AbstractActionController{
         } else {
             $server->handle();
         }
+        
         return $response;        
     }
     
     public function clientjsonAction(){
-        $url = 'http://localjcorona/jsonrpc/public/jsonserver/rpc';
+        $url = 'http://localjcorona/zf/zfpruebajsonrpc/public/jsonserver/rpc';
         
         $client = new ClientHttp();
         $client->setUri($url);
         
+        $limit = (int) $this->params()->fromRoute("limit",null);
+        
         $jsonrpcclient = new ClientJson($url,$client);        
-        $result = $jsonrpcclient->call('getByLimit',array());
+        $result = $jsonrpcclient->call('getByLimit',array($limit));
         
-        var_dump($result);
+        //var_dump($result);
+        //return $this->response;
         
-        return $this->response;
+        return new ViewModel(array('data'=>$result));
     }
        
             

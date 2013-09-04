@@ -25,7 +25,7 @@ class Service{
     public static function getByLimit($limit){
         
         $FuerzaventamenTable = 
-                  self::$sm->get('Soapserver\Model\FuerzaventamenTable');
+                  self::$sm->get('Services\Model\FuerzaventamenTable');
         $items= $FuerzaventamenTable->findByPosition($limit); 
         
         return $items;
